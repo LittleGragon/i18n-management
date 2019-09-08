@@ -20,10 +20,10 @@ module.exports = {
         {
           loader: 'babel-loader',
           options: {
-            presets: ['es2015', 'react'],
+            presets: ['es2015', 'react', 'stage-0'],
             plugins: [
-              // 'transform-decorators-legacy',
-              // 'transform-class-properties'
+              'transform-decorators-legacy',
+              'transform-class-properties'
             ],
           },
         },
@@ -34,6 +34,11 @@ module.exports = {
         'style-loader',
         'css-loader',
       ],
+    }, {
+      test: /.pug/,
+      use: [{
+        loader: 'pug-loader',
+      }]
     }],
   },
   plugins: [new HtmlPlugin({
