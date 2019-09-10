@@ -3,8 +3,8 @@ const path = require('path');
 module.exports = {
   entry: './client/app.js',
   output: {
-    filename: 'js/bundle.js',
-    path: path.resolve(__dirname, 'app/public/local'),
+    filename: 'static/bundle.js',
+    path: path.resolve(__dirname, ''),
   },
   module: {
     rules: [{
@@ -41,10 +41,10 @@ module.exports = {
       }]
     }],
   },
-  plugins: [new HtmlPlugin({
-    template: path.resolve(__dirname, 'templetes/index.pug'),
-    filename: 'templates/index.html'
-  })],
+  // plugins: [new HtmlPlugin({
+  //   template: path.resolve(__dirname, 'pages/index.pug'),
+  //   filename: 'templates/index.html'
+  // })],
   resolve: {
     extensions: ['.json', '.js', '.jsx', '.css', '.less', '.ts', '.tsx'],
   },

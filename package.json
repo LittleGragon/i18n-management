@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm test",
     "build:dev": "webpack --config ./webpack.config.js --watch",
-    "start": "FLASK_APP=app/app.py FLASK_DEBUG=1 python3 -m flask run"
+    "start": "FLASK_APP=app.py FLASK_DEBUG=1 python3 -m flask run"
   },
   "keywords": [
     "i18n"
