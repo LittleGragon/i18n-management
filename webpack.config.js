@@ -1,6 +1,7 @@
 const HtmlPlugin = require('html-webpack-plugin');
 const path = require('path');
 module.exports = {
+  mode: 'development',
   entry: './client/app.js',
   output: {
     filename: 'js/bundle.js',
@@ -47,6 +48,10 @@ module.exports = {
   })],
   resolve: {
     extensions: ['.json', '.js', '.jsx', '.css', '.less', '.ts', '.tsx'],
+    alias: {
+      $containers: path.resolve(__dirname, './clien/containers'),
+      $components: path.resolve(__dirname, './client/components'),
+    }
   },
   devtool: 'source-map',
 }
