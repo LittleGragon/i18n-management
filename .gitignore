@@ -1,4 +1,4 @@
 node_modules
 *.log
-app/public
-app/__pycache__
+static
+__pycache__
