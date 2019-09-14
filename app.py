@@ -22,12 +22,12 @@ def upload():
   book = load_workbook('i18n.xlsx')
   res = {}
   for n, name in enumerate(book.sheetnames):
-    res[name] = {}
+    res[name] = []
     sheet = book.get_sheet_by_name(name)
     for i, r in enumerate(sheet.rows):
-      res[name][i] = {}
+      res[name].append([])
       for k, c in enumerate(r):
-        res[name][i][k] = c.value
+        res[name][i].append(c.value)
   return json.dumps(res)
     
 if __name__ == '__main__':

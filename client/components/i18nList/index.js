@@ -11,25 +11,40 @@ class I18nList extends React.Component {
     };
   }
   handleGetData = async () => {
-   console.log('get data');
    return axios.get('/get/excel').then(response => {
-    console.log('response', response)
-    this.setState(state => ({ ...state, data: response.data }))
+    const result = this.handleFormatData(response.data);
+    this.setState(state => ({ ...state, data: result }))
    });
   }
   handleFormatData = data => {
-    return data.map(item => {
-      let columns = [];
-      let datasources = [];
-      const title = Object.keys(item)[0]
-      const dataSources = Object.values(item)[0];
+    const list = [];
+    for (let [key, value] of Object.entries(data)) {
+      let title = key;
+      let [columnKeys, ...dataList] = value;
+      columnKeys = columnKeys.filter(item => item)
+      let columns = columnKeys.map(item => {
+        return {
+          key: item,
+          dataIndex: item,
+          title: item,
+        }
+      });
 
-      console.log('data sources', dataSources);
-      return {
+      let dataSources = dataList.filter(item => item).map((item, index) => {
+        let object = {};
+        for(let i = 0; i < item.length; i++) {
+          const key = columnKeys[i];
+          object[key]=item[i]
+        }
+        return object;
+      });
+      list.push({
         title,
-      }
-    })
- 
+        dataSources,
+        columns,
+      })
+    }
+    return list;
 
   }
   componentDidMount() {
@@ -37,22 +52,20 @@ class I18nList extends React.Component {
   }
   render() {
     const { data } = this.state;
-    console.log('data', data)
     return (
       <div>
-        table
-        {/* <Tabs>
+        <Tabs>
           {data.map(item => {
-            const key = Object.keys(item)[0]
-            const dataSources = Object.values(item)[0];
-            console.log('data sources', dataSources);
             return(
-            <TabPane tab={key} key={key}>
-              
+            <TabPane tab={item.title} key={item.title}>
+              <Table
+                columns={item.columns}
+                dataSource={item.dataSources}
+              />
             </TabPane>
             )
           })} 
-        </Tabs> */}
+        </Tabs>
       </div>
     )
   }
