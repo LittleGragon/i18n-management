@@ -1,5 +1,6 @@
 import React from 'react';
 // import Upload from '$components/upload';
+import I18nList from '../../components/i18nList';
 import { Upload, Button, Icon } from 'antd'
 class Home extends React.Component {
   handleChange = info => {
@@ -18,6 +19,7 @@ class Home extends React.Component {
             Upload
           </Button>
           </Upload>
+          <I18nList/>
       </div>
     )
   }
