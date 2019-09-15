@@ -1,4 +1,5 @@
 import React from 'react';
+import uuidv4 from 'uuid/v4'
 import { Tabs, Table, Input } from 'antd';
 import axios from 'axios';
 const { TabPane } = Tabs;
@@ -34,7 +35,9 @@ class I18nList extends React.Component {
       });
 
       let dataSources = dataList.filter(item => item).map((item, index) => {
-        let object = {};
+        let object = {
+          key: uuidv4(),
+        };
         for(let i = 0; i < item.length; i++) {
           const key = columnKeys[i];
           object[key]=item[i]
@@ -73,7 +76,6 @@ class I18nList extends React.Component {
           return {
             ...item,
             render: (text) => {
-              // console.log('render', value
               return <p dangerouslySetInnerHTML={{ __html: typeof text === 'string' && text.replace(value, `<span style="color:red;" >${value}</span>`) }}></p>;
             }
           }
@@ -92,6 +94,9 @@ class I18nList extends React.Component {
       ...state,
       filterResult,
     }))
+  }
+  handleClickRow = (record) => {
+    console.log('record', record);
   }
   componentDidMount() {
     this.handleGetData();
@@ -113,6 +118,13 @@ class I18nList extends React.Component {
               key={item.title}
               columns={item.columns}
               dataSource={item.dataSources}
+              onRow={(record, index) => {
+                return {
+                  onClick: (e) => {
+                    this.handleClickRow(record)
+                  }
+                }
+              }}
             />
           )
         })}
