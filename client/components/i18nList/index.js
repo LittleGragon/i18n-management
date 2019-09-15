@@ -68,6 +68,15 @@ class I18nList extends React.Component {
             }
           });
           return isIn;
+        }),
+        columns: originalData.columns.map(item => {
+          return {
+            ...item,
+            render: (text) => {
+              // console.log('render', value
+              return <p dangerouslySetInnerHTML={{ __html: typeof text === 'string' && text.replace(value, `<span style="color:red;" >${value}</span>`) }}></p>;
+            }
+          }
         })
       }
     }).filter(item => {
