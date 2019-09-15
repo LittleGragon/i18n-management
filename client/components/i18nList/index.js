@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Table } from 'antd';
+import { Tabs, Table, Input } from 'antd';
 import axios from 'axios';
 const { TabPane } = Tabs;
 
@@ -7,13 +7,16 @@ class I18nList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      originalData: [],
+      filterResult: [],
+      keyword: ''
     };
   }
   handleGetData = async () => {
    return axios.get('/get/excel').then(response => {
     const result = this.handleFormatData(response.data);
-    this.setState(state => ({ ...state, data: result }))
+    this.setState(state => ({ ...state, originalData: result }))
    });
   }
   handleFormatData = data => {
@@ -45,17 +48,67 @@ class I18nList extends React.Component {
       })
     }
     return list;
-
+  }
+  handleKeyWordChange = e => {
+    const { value } = e.target;
+    this.setState(state => ({
+      ...state,
+      keyword: value,
+    }));
+  }
+  handleFilter = (data, value) => {
+    const result = data.map(originalData => {
+      return {
+        ...originalData,
+        dataSources: originalData.dataSources.filter(item => {
+          let isIn = false;
+          Object.values(item).forEach(v => {
+            if(typeof v === 'string'  && v.includes(value)) {
+              isIn = true
+            }
+          });
+          return isIn;
+        })
+      }
+    }).filter(item => {
+      return item.dataSources.length > 0 
+    });
+    return result;
+  }
+  handleSubmit = e => {
+    e.preventDefault();
+    const  { originalData, keyword } =this.state;
+    const filterResult = this.handleFilter(originalData, keyword);
+    this.setState(state => ({
+      ...state,
+      filterResult,
+    }))
   }
   componentDidMount() {
     this.handleGetData();
   }
   render() {
-    const { data } = this.state;
+    const { filterResult, originalData } = this.state;
     return (
       <div>
-        <Tabs>
-          {data.map(item => {
+        <form onSubmit={this.handleSubmit}>
+          <Input
+            placeholder="keyword"
+            onChange={this.handleKeyWordChange}
+          />
+        </form>
+        filter result
+        {filterResult.map(item => {
+          return (
+            <Table
+              key={item.title}
+              columns={item.columns}
+              dataSource={item.dataSources}
+            />
+          )
+        })}
+         <Tabs>
+          {originalData.map(item => {
             return(
             <TabPane tab={item.title} key={item.title}>
               <Table
