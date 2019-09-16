@@ -6,7 +6,7 @@ class EditModal extends React.Component {
   render() {
     return (
       <div>
-
+        edit modal
       </div>
     )
   }

@@ -51,6 +51,7 @@ module.exports = {
     alias: {
       $containers: path.resolve(__dirname, './clien/containers'),
       $components: path.resolve(__dirname, './client/components'),
+      $stores: path.resolve(__dirname, './client/stores')
     }
   },
   devtool: 'source-map',

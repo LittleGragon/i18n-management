@@ -2,6 +2,8 @@ import React from 'react';
 import uuidv4 from 'uuid/v4'
 import { Tabs, Table, Input } from 'antd';
 import axios from 'axios';
+import editFormStore from '$stores/editForm';
+import EditModal from '../editModal';
 const { TabPane } = Tabs;
 
 class I18nList extends React.Component {
@@ -13,6 +15,7 @@ class I18nList extends React.Component {
       filterResult: [],
       keyword: ''
     };
+    this.editStore = new editFormStore();
   }
   handleGetData = async () => {
    return axios.get('/get/excel').then(response => {
@@ -96,7 +99,9 @@ class I18nList extends React.Component {
     }))
   }
   handleClickRow = (record) => {
-    console.log('record', record);
+    // console.log('record', record);
+    // console.log(this.editStore)
+    this.editStore.setCurrentRecord(record);
   }
   componentDidMount() {
     this.handleGetData();
@@ -105,6 +110,7 @@ class I18nList extends React.Component {
     const { filterResult, originalData } = this.state;
     return (
       <div>
+        <EditModal/>
         <form onSubmit={this.handleSubmit}>
           <Input
             placeholder="keyword"
